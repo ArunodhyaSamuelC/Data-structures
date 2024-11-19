@@ -1,0 +1,156 @@
+#include <stdio.h>
+
+#define MAX_SIZE 100 // Maximum size of the array
+
+// Function declarations
+void insertElement(int arr[], int *n, int element, int position);
+void deleteElement(int arr[], int *n, int position);
+void updateElement(int arr[], int n, int position, int newValue);
+int searchElement(int arr[], int n, int element);
+void displayArray(int arr[], int n);
+
+int main() {
+    int arr[MAX_SIZE], n, choice, element, position, newValue;
+
+    // Input array size and elements
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+    if (n > MAX_SIZE) {
+        printf("Array size exceeds the maximum limit of %d.\n", MAX_SIZE);
+        return 1;
+    }
+
+    printf("Enter %d elements:\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    do {
+        // Menu for array operations
+        printf("\nArray Operations:\n");
+        printf("1. Insert Element\n");
+        printf("2. Delete Element\n");
+        printf("3. Update Element\n");
+        printf("4. Search Element\n");
+        printf("5. Display Array\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the element to insert: ");
+                scanf("%d", &element);
+                printf("Enter the position (1 to %d): ", n + 1);
+                scanf("%d", &position);
+                insertElement(arr, &n, element, position);
+                break;
+
+            case 2:
+                printf("Enter the position of the element to delete (1 to %d): ", n);
+                scanf("%d", &position);
+                deleteElement(arr, &n, position);
+                break;
+
+            case 3:
+                printf("Enter the position of the element to update (1 to %d): ", n);
+                scanf("%d", &position);
+                printf("Enter the new value: ");
+                scanf("%d", &newValue);
+                updateElement(arr, n, position, newValue);
+                break;
+
+            case 4:
+                printf("Enter the element to search: ");
+                scanf("%d", &element);
+                position = searchElement(arr, n, element);
+                if (position != -1) {
+                    printf("Element found at position %d.\n", position);
+                } else {
+                    printf("Element not found in the array.\n");
+                }
+                break;
+
+            case 5:
+                displayArray(arr, n);
+                break;
+
+            case 6:
+                printf("Exiting program.\n");
+                break;
+
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    } while (choice != 6);
+
+    return 0;
+}
+
+// Function to insert an element at a specific position
+void insertElement(int arr[], int *n, int element, int position) {
+    if (*n >= MAX_SIZE) {
+        printf("Array is full! Cannot insert new element.\n");
+        return;
+    }
+    if (position < 1 || position > *n + 1) {
+        printf("Invalid position!\n");
+        return;
+    }
+    for (int i = *n; i >= position; i--) {
+        arr[i] = arr[i - 1];
+    }
+    arr[position - 1] = element;
+    (*n)++;
+    printf("Element inserted successfully.\n");
+}
+
+// Function to delete an element from a specific position
+void deleteElement(int arr[], int *n, int position) {
+    if (*n == 0) {
+        printf("Array is empty! Cannot delete an element.\n");
+        return;
+    }
+    if (position < 1 || position > *n) {
+        printf("Invalid position!\n");
+        return;
+    }
+    for (int i = position - 1; i < *n - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    (*n)--;
+    printf("Element deleted successfully.\n");
+}
+
+// Function to update an element at a specific position
+void updateElement(int arr[], int n, int position, int newValue) {
+    if (position < 1 || position > n) {
+        printf("Invalid position!\n");
+        return;
+    }
+    arr[position - 1] = newValue;
+    printf("Element updated successfully.\n");
+}
+
+// Function to search for an element in the array
+int searchElement(int arr[], int n, int element) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == element) {
+            return i + 1; // Return 1-based index
+        }
+    }
+    return -1; // Element not found
+}
+
+// Function to display the array elements
+void displayArray(int arr[], int n) {
+    if (n == 0) {
+        printf("Array is empty!\n");
+        return;
+    }
+    printf("Array elements: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
